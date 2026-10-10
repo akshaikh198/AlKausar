@@ -106,19 +106,26 @@ function MyNavbar() {
                 className={`custom-dropdown ${
                   shopOpen ? "dropdown-open" : ""
                 }`}
-                onMouseEnter={() => setShopOpen(true)}
-                onMouseLeave={() => {
-                  setShopOpen(false);
-                  setAllar_100ml(false);
-                  setWoAllar_100ml(false);
-                  setGiftsOpen(false);
+                onPointerEnter={(event) => {
+                  if (event.pointerType === "mouse") {
+                    setShopOpen(true);
+                  }
+                }}
+                onPointerLeave={(event) => {
+                  if (event.pointerType === "mouse") {
+                    setShopOpen(false);
+                    setAllar_100ml(false);
+                    setWoAllar_100ml(false);
+                    setGiftsOpen(false);
+                  }
                 }}
               >
 
                 <button
                   type="button"
                   className="nav-main-link dropdown-trigger"
-                  onClick={() => setShopOpen(!shopOpen)}
+                  aria-expanded={shopOpen}
+                  onClick={() => setShopOpen((open) => !open)}
                 >
 
                   <span>Shop</span>
@@ -159,19 +166,24 @@ function MyNavbar() {
                 className={`custom-dropdown ${
                   collectionOpen ? "dropdown-open" : ""
                 }`}
-                onMouseEnter={() =>
-                  setCollectionOpen(true)
-                }
-                onMouseLeave={() =>
-                  setCollectionOpen(false)
-                }
+                onPointerEnter={(event) => {
+                  if (event.pointerType === "mouse") {
+                    setCollectionOpen(true);
+                  }
+                }}
+                onPointerLeave={(event) => {
+                  if (event.pointerType === "mouse") {
+                    setCollectionOpen(false);
+                  }
+                }}
               >
 
                 <button
                   type="button"
                   className="nav-main-link dropdown-trigger"
+                  aria-expanded={collectionOpen}
                   onClick={() =>
-                    setCollectionOpen(!collectionOpen)
+                    setCollectionOpen((open) => !open)
                   }
                 >
 
