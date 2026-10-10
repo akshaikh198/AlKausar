@@ -4,7 +4,7 @@ import logoImage from "../assets/Al_Kausar_Logo.png";
 
 function Login() {
   return (
-    <main className="premium-page auth-page">
+    <main className="premium-page auth-page" style={{alignItems:'start', padding: '4% 2%' }}>
       <div className="auth-shell">
         <div
                   className="auth-panel auth-visual register-visual"
@@ -29,7 +29,7 @@ function Login() {
           <form className="auth-form">
             <label>
               Email address
-              <input type="email" placeholder="hello@almas.com" />
+              <input type="email" placeholder="hello@AlKausar.com" />
             </label>
             <label>
               Password
