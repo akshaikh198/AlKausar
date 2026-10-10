@@ -12,6 +12,7 @@ import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import Wishlist from "./pages/Wishlist";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Checkout from "./pages/Checkout";
 import About from "./pages/About.jsx";
 import Journal from "./pages/Journal";
@@ -36,6 +37,7 @@ function AppShell() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/about" element={<About />} />
         <Route path="/pages/about" element={<Navigate to="/about" replace />} />
