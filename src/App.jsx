@@ -26,7 +26,7 @@ function AppShell() {
   return (
     <>
       <Navbar />
-      {showHero && <Hero />}
+      <Hero show={showHero} />
 
       <Routes>
         <Route path="/" element={<Home />} />
