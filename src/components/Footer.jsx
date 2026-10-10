@@ -44,7 +44,10 @@ function Footer() {
                   <i className="bi bi-facebook" style={{ color: '#2800bb' }} />
                 </a>
                 <a href="https://www.pinterest.com/almasperfume/" target="_blank" rel="noreferrer" aria-label="Pinterest">
-                  <i className="bi bi-pinterest" style={{ color: '#f50000' }} />
+                  <i className="bi bi-pinterest" style={{ color: '#f76c6c' }} />
+                </a>
+                <a href="https://www.youtube.com/@AlmasPerfume-dt8dn" target="_blank" rel="noreferrer" aria-label="YouTube">
+                  <i className="bi bi-youtube" style={{ color: '#b30000' }} />
                 </a>
               </div>
             </div>
