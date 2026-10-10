@@ -16,7 +16,7 @@ function Login() {
 
 
           <div className="auth-brand-lockup" style={{ textAlign: "center", marginBottom: "2rem" }}>
-            <img src="src/assets/logo.png" alt="Al-mas perfumes" className="img-fluid" style={{ maxWidth: "30%", height: "auto" }} />
+            <img src="src/assets/Al_Kausar_Logo.png" alt="Al-mas perfumes" className="img-fluid" style={{ maxWidth: "30%", height: "auto" }} />
           </div>
 
 
