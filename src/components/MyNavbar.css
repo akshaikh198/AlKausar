@@ -1,0 +1,774 @@
+/* =========================================================
+   GLOBAL NAVBAR
+========================================================= */
+
+.main-navbar {
+  --navbar-height: 72px;
+
+  position: sticky;
+  top: 0;
+
+  width: 100%;
+  height: var(--navbar-height);
+  min-height: var(--navbar-height);
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #eeeeee;
+
+  z-index: 1050;
+}
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.navbar-container {
+  width: 100%;
+  min-height: var(--navbar-height);
+
+  display: flex;
+  align-items: center;
+
+  padding-left: clamp(14px, 3vw, 50px);
+  padding-right: clamp(14px, 3vw, 50px);
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+
+  flex-shrink: 0;
+
+  margin: 0;
+
+  padding: 0;
+}
+
+.main-navbar .navbar-brand .navbar-logo {
+  width: clamp(90px, 9vw, 125px);
+
+  height: 70px;
+
+  margin: 0;
+
+  display: block;
+  object-fit: contain;
+}
+
+
+/* =========================================================
+   MOBILE TOGGLE
+========================================================= */
+
+.navbar-toggler-custom {
+  width: 40px;
+  height: 40px;
+
+  display: none;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  margin-right: 12px;
+
+  border: none !important;
+
+  background: transparent !important;
+
+  box-shadow: none !important;
+
+  color: #111111;
+
+  font-size: 23px;
+}
+
+.navbar-toggler-custom:focus {
+  box-shadow: none !important;
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.nav-offcanvas {
+  flex: 1;
+}
+
+.offcanvas-body {
+  display: flex;
+  align-items: center;
+
+  padding: 0;
+}
+
+.main-nav {
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: clamp(2px, 0.5vw, 12px);
+
+  margin-left: clamp(20px, 4vw, 70px);
+}
+
+
+/* =========================================================
+   MAIN NAV LINKS
+========================================================= */
+
+.nav-main-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 8px clamp(9px, 1vw, 17px);
+  border: none;
+  background: transparent;
+  color: #151515;
+  text-decoration: none;
+  font-size: clamp(13px, 1vw, 15px);
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.nav-main-link:hover {
+  color: #000000;
+  background:  #ffc66a;
+}
+
+
+
+.dropdown-trigger i {
+  font-size: 9px;
+
+  transition: transform 0.25s ease;
+}
+
+.dropdown-open > .dropdown-trigger i {
+  transform: rotate(180deg);
+}
+
+
+/* =========================================================
+   CUSTOM DROPDOWN
+========================================================= */
+
+.custom-dropdown {
+  position: relative;
+
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+}
+
+.custom-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 1px);
+  left: 0;
+  width: max-content;
+  min-width: 210px;
+  max-width: min(300px, 90vw);
+  padding: 8px 0;
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.09);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease,
+    transform 0.2s ease;
+  z-index: 1100;
+}
+
+
+/* Desktop hover */
+
+@media (min-width: 992px) {
+
+  .custom-dropdown:hover > .custom-dropdown-menu,
+  .custom-dropdown.dropdown-open > .custom-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+}
+
+
+/* =========================================================
+   DROPDOWN ITEMS
+========================================================= */
+
+.custom-dropdown-menu > a,
+.nested-dropdown-trigger {
+  width: 100%;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 9px 18px;
+  border: none;
+  background: transparent;
+  color: #222222;
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    padding-left 0.2s ease;
+}
+
+.custom-dropdown-menu > a:hover,
+.nested-dropdown-trigger:hover {
+  background: #757070;
+  color: #000000;
+  padding-left: 22px;
+}
+
+
+/* =========================================================
+   NESTED DROPDOWN
+========================================================= */
+
+.nested-dropdown {
+  position: relative;
+}
+
+.nested-dropdown-trigger i {
+  font-size: 9px;
+  transition: transform 0.2s ease;
+}
+
+.nested-open > .nested-dropdown-trigger i {
+  transform: translateX(3px);
+}
+
+
+/* =========================================================
+   NESTED MENU
+========================================================= */
+
+.nested-dropdown-menu {
+  position: absolute;
+  top: -8px;
+  left: calc(100% + 1px);
+  min-width: 190px;
+  padding: 8px 0;
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.09);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(8px);
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease,
+    transform 0.2s ease;
+}
+
+@media (min-width: 992px) {
+
+  .nested-dropdown:hover > .nested-dropdown-menu,
+  .nested-dropdown.nested-open > .nested-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    background: #ffffff;
+  }
+
+}
+
+.nested-dropdown-menu a {
+  display: block;
+  padding: 10px 18px;
+  color: #222222;
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+  transition:
+    background 0.2s ease,
+    padding-left 0.2s ease;
+}
+
+.nested-dropdown-menu .nav-link:hover {
+  background:  #f5d39e;
+  padding-left: 22px;
+}
+
+
+/* =========================================================
+   RIGHT SIDE
+========================================================= */
+
+.navbar-tools {
+  display: flex;
+  align-items: center;
+  gap: clamp(3px, 0.8vw, 15px);
+
+  margin-left: auto;
+
+  flex-shrink: 0;
+}
+
+.main-navbar .action-link {
+  flex-direction: row;
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.nav-search {
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+
+  position: relative;
+}
+
+.search-input {
+  width: 0;
+
+  height: 34px;
+
+  padding: 0;
+
+  border: none;
+
+  border-bottom: 1px solid #222222;
+
+  outline: none;
+
+  font-size: 13px;
+
+  opacity: 0;
+
+  transition:
+    width 0.3s ease,
+    opacity 0.2s ease,
+    padding 0.3s ease;
+}
+
+.nav-search.is-open .search-input {
+  width: clamp(130px, 15vw, 220px);
+
+  padding: 0 8px;
+
+  opacity: 1;
+}
+
+.search-toggle {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #111111;
+
+  font-size: 17px;
+
+  cursor: pointer;
+}
+
+.search-toggle:hover {
+  color: #ffb849;
+}
+
+
+/* =========================================================
+   ACTION ICONS
+========================================================= */
+
+.action-link {
+  display: flex;
+  align-items: center;
+
+  gap: 2px;
+
+  flex-shrink: 0;
+}
+
+.action-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 !important;
+
+  color: #111111 !important;
+
+  font-size: 17px;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.action-icon:hover {
+  color: #000 !important;
+background:  #ffb849;
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   OFFCANVAS
+========================================================= */
+
+.offcanvas-logo {
+  width: 105px;
+  height: auto;
+}
+
+.nav-offcanvas {
+  background: #ffffff;
+}
+
+.offcanvas-header {
+  min-height: 72px;
+
+  padding: 18px 20px;
+
+  border-bottom: 1px solid #eeeeee;
+}
+
+.offcanvas-body {
+  padding: 20px;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1199px) and (min-width: 992px) {
+
+  .navbar-container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .main-nav {
+    margin-left: 25px;
+
+    gap: 0;
+  }
+
+  .nav-main-link {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .navbar-tools {
+    gap: 3px;
+  }
+
+  .action-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE + SMALL TABLET
+========================================================= */
+
+@media (max-width: 991px) {
+
+  .main-navbar {
+    --navbar-height: 70px;
+  }
+
+  .navbar-container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .navbar-toggler-custom {
+    display: flex;
+  }
+
+  .main-navbar .navbar-brand .navbar-logo {
+    width: 100px;
+    height: 48px;
+  }
+
+  .nav-offcanvas {
+    width: min(330px, 85vw) !important;
+  }
+
+  .offcanvas-body {
+    display: block;
+
+    padding: 20px;
+  }
+
+  .main-nav {
+    display: block;
+
+    height: auto;
+
+    margin: 0;
+  }
+
+  .nav-main-link {
+    width: 100%;
+
+    min-height: 48px;
+
+    justify-content: space-between;
+
+    padding: 12px 5px;
+
+    border-bottom: 1px solid #eeeeee;
+  }
+
+  .custom-dropdown {
+    display: block;
+
+    height: auto;
+  }
+
+  .custom-dropdown-menu {
+    position: static;
+
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+
+    display: none;
+
+    padding: 0 0 0 12px;
+
+    border: none;
+
+    box-shadow: none;
+
+    opacity: 1;
+    visibility: visible;
+
+    transform: none;
+  }
+
+  .custom-dropdown.dropdown-open > .custom-dropdown-menu {
+    display: block;
+  }
+
+  .nested-dropdown-menu {
+    position: static;
+
+    width: 100%;
+    min-width: 0;
+
+    display: none;
+
+    padding: 0 0 0 12px;
+
+    border: none;
+
+    box-shadow: none;
+
+    opacity: 1;
+    visibility: visible;
+
+    transform: none;
+  }
+
+  .nested-dropdown.nested-open > .nested-dropdown-menu {
+    display: block;
+  }
+
+  .nested-dropdown-trigger {
+    min-height: 44px;
+
+    padding: 10px 12px;
+
+    border-bottom: 1px solid #f1f1f1;
+  }
+
+  .custom-dropdown-menu > a {
+    min-height: 44px;
+
+    padding: 10px 15px;
+  }
+
+}
+
+@media (max-width: 991px) {
+  .nav-search.is-open .search-input {
+    position: fixed;
+
+    top: var(--navbar-height);
+    left: 10px;
+    right: 10px;
+
+    width: auto;
+    height: 42px;
+
+    padding: 0 12px;
+
+    background: #ffffff;
+
+    border: 1px solid #dddddd;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+}
+
+
+/* =========================================================
+   LARGE MOBILE
+========================================================= */
+
+@media (max-width: 575px) {
+
+  .navbar-container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .navbar-toggler-custom {
+    width: 36px;
+    height: 36px;
+
+    margin-right: 7px;
+
+    font-size: 21px;
+  }
+
+  .main-navbar .navbar-brand .navbar-logo {
+    width: 92px;
+    height: 40px;
+  }
+
+  .navbar-tools {
+    gap: 0;
+  }
+
+  .action-icon {
+    width: 34px;
+    height: 34px;
+
+    font-size: 16px;
+  }
+
+  .search-toggle {
+    width: 34px;
+    height: 34px;
+
+    font-size: 16px;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .navbar-container {
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+
+  .navbar-toggler-custom {
+    margin-right: 4px;
+  }
+
+  .main-navbar .navbar-brand .navbar-logo {
+    width: 82px;
+    height: 40px;
+  }
+
+  .action-icon {
+    width: 31px;
+    height: 31px;
+
+    font-size: 15px;
+  }
+
+  .search-toggle {
+    width: 31px;
+    height: 31px;
+  }
+
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+  .custom-dropdown:hover > .custom-dropdown-menu {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .nested-dropdown:hover > .nested-dropdown-menu {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+
+}
