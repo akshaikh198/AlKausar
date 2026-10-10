@@ -96,6 +96,7 @@ function Register() {
               <label>
                 Mobile Number
                 <input type="tel" placeholder="+971 50 123 4567" />
+                <span style={{fontSize:'8px', paddingLeft:'6%'}}> Enter Mobile Number With Country Code</span>
               </label>
               <label>
                 Email address
