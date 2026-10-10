@@ -1,24 +1,28 @@
 import { Link } from "react-router-dom";
+import bannerImage from "../assets/banner/attar_banner.png";
+import logoImage from "../assets/Al_Kausar_Logo.png";
 
 function Login() {
   return (
     <main className="premium-page auth-page">
       <div className="auth-shell">
-        <div className="auth-panel auth-visual" style={{ backgroundImage: "url('src/assets/banner/attar_banner.png')", backgroundSize: "cover", backgroundPosition: "inherit", margin: "5%" }}>
-          {/* <p className="luxury-label">Welcome back</p>
-          <h1>Your fragrance lounge awaits.</h1>
-          <p>
-            Sign in to access your saved favorites, custom recommendations, and curated offers.
-          </p> */}
-        </div>
+        <div
+                  className="auth-panel auth-visual register-visual"
+                  style={{ backgroundImage: `url(${bannerImage})` }}
+                >
+                  {/* Intentionally left empty to keep the same visual treatment as the login page. */}
+                </div>
 
         <div className="auth-panel auth-form-panel">
 
 
-          <div className="auth-brand-lockup" style={{ textAlign: "center", marginBottom: "2rem" }}>
-            <img src="src/assets/Al_Kausar_Logo.png" alt="Al-mas perfumes" className="img-fluid" style={{ maxWidth: "30%", height: "auto" }} />
-          </div>
-
+        <div className="auth-brand-lockup register-brand-lockup">
+                    <img
+                      src={logoImage}
+                      alt="Al-Kausar Perfumes"
+                      className="img-fluid"
+                    />
+                  </div>
 
 
           <h2>Login</h2>
