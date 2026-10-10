@@ -78,7 +78,7 @@ function Footer() {
 
           <Col lg={4} md={12} xs={12}>
             <div className="footer-column contact-column">
-              <h3 className="footer-title" cl>Visit or contact</h3>
+              <h3 className="footer-title" style={{paddingLeft:'5%'}}>Visit or contact</h3>
               <ul className="footer-contact">
                 <li>
                   <i className="bi bi-geo-alt" />
