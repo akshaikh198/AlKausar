@@ -1,12 +1,10 @@
 
 import { Link } from "react-router-dom";
 import products from "../data/products";
-import { ShoppingBag, Heart } from "lucide-react";
-import { useShop } from "../context/ShopContext";
 import Testimonial from "../components/Testimonial";
-import ProductDetailGallery from "../components/productdetailsgallary";
-import Featured from "../components/Featured.jsx";
-
+import BestSellers from "../components/BestSellers";
+import NewArrivals from "../components/NewArrivals";
+import Sales from "../components/Sales";
 
 const categories = [
   { name: "Perfume", image: products[0].image, hoverImage: products[0].hoverImage, text: "Signature scent stories" },
@@ -17,9 +15,6 @@ const categories = [
 
 
 function Home() {
-  const { addToCart, toggleWishlist, wishlist } = useShop();
-  const featured = products.slice(0, 8);
-
   return (
     <main className="home-page">
 
@@ -72,101 +67,9 @@ function Home() {
       </section>
 
 
-      {/* featured products section */}
-
-
-      <section className="container py-5">
-        <div className="feature-banner d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-4">
-          <div>
-            <p className="section-kicker mb-2">Featured collection</p>
-            <h2 className="display-6 fw-light mb-0">Best sellers</h2>
-          </div>
-          <Link to="/shop" className="btn premium-btn mb-3">Explore collection</Link>
-        </div>
-
-       <div className="row g-4">
-  {featured.map((product) => (
-
-
-      
-    <div key={product.id} className="col-12 col-md-6 col-xl-3">
-      <div className="royal-product-card" style={{ height:"250px"}}>
-
-        {/* IMAGE AREA */}
-        <div className="royal-product-image rounded mx-auto d-block" style={{ height:"200px", position: "relative", overflow: "hidden" }}>
-          <Link to={`/product/${product.id}`}>
-            <img className="rounded mx-auto d-block"
-              src={product.image}
-              alt={product.name}
-            />
-          </Link>
-
-          {/* Hover Image */}
-            <img
-              src={product.hoverImage || product.image}
-              alt={`${product.name} alternate view`}
-              className="product-hover-image"
-            />
-
-          {/* Hover Overlay */}
-          <div className="royal-product-overlay">
-
-            {/* Top Actions */}
-            <div className="royal-actions">
-
-  <button
-    type="button"
-    className="royal-icon-btn"
-    aria-label={wishlist.includes(product.id) ? "Remove from wishlist" : "Add to wishlist"}
-    aria-pressed={wishlist.includes(product.id)}
-    onClick={() => toggleWishlist(product.id)}
-  >
-    <Heart size={18} strokeWidth={1.5} fill={wishlist.includes(product.id) ? "currentColor" : "none"} />
-  </button>
-
-  <button
-    type="button"
-    className="royal-icon-btn"
-    aria-label="Add to cart"
-    onClick={() => addToCart(product)}
-  >
-    <ShoppingBag size={18} strokeWidth={1.5} />
-  </button>
-
-</div>
-
-            {/* Bottom Price */}
-            <div className="royal-price">
-              ₹{product.price.toLocaleString("en-IN")}
-            </div>
-
-          </div>
-        </div>
-
-        {/* PRODUCT INFO */}
-        <div className="royal-product-info" style={{ height:"50px"}}>
-
-          <span className="royal-product-category" style={{ fontSize: "0.8rem", color: "#888", textTransform: "uppercase", letterSpacing: "0.05em",textAlign: "start", display: "block", marginBottom: "0.25rem" }}>
-            {product.category}
-          </span>
-
-          <Link
-            to={`/product/${product.id}`}
-            className="royal-product-name"
-          style={{ fontSize: "1rem", fontWeight: "500", color: "#333" }}>
-            {product.name}
-          </Link>
-
-        </div>
-
-      </div>
-    </div>
-
-
-
-  ))}
-</div>
-      </section>
+      <BestSellers />
+      <NewArrivals />
+      <Sales />
 
       <section className="container py-5">
         <div className="row g-4 align-items-center">

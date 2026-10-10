@@ -1556,6 +1556,45 @@ section-kicker
   object-fit: cover;
 }
 
+.sales-promo {
+  align-items: center;
+  background: linear-gradient(120deg, #f3ece0, #e8dcc7);
+  border: 1px solid rgba(24, 19, 15, 0.08);
+  border-radius: 24px;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.7fr);
+  min-height: 320px;
+  overflow: hidden;
+  padding: 36px 48px;
+}
+
+.sales-promo-copy {
+  max-width: 540px;
+}
+
+.sales-promo-copy .section-kicker {
+  text-align: left;
+}
+
+.sales-promo-copy > p:not(.section-kicker) {
+  color: #645d56;
+  line-height: 1.7;
+}
+
+.sales-promo-image {
+  align-self: stretch;
+  display: flex;
+  justify-content: center;
+  min-height: 240px;
+}
+
+.sales-promo-image img {
+  max-height: 290px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
 .benefit-list {
   display: grid;
   gap: 24px;
@@ -1612,6 +1651,21 @@ section-kicker
   border-radius: 999px;
   padding: 15px 18px;
   background: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 767.98px) {
+  .sales-promo {
+    grid-template-columns: 1fr;
+    padding: 30px 24px;
+  }
+
+  .sales-promo-image {
+    min-height: 180px;
+  }
+
+  .sales-promo-image img {
+    max-height: 220px;
+  }
 }
 
 .page-shell {
