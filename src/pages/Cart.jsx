@@ -5,13 +5,19 @@ function Cart() {
   const { cart, updateCartQuantity, removeFromCart, cartSubtotal } = useShop();
   const shipping = cartSubtotal > 0 ? 399 : 0;
   const total = cartSubtotal + shipping;
+  const itemCount = cart.reduce((count, item) => count + item.quantity, 0);
 
   return (
-    <main className="page-shell">
-      <div className="container py-5">
-        <div className="page-heading mb-4">
+    <main className="page-shell cart-page">
+      <div className="container cart-container py-5">
+        <div className="page-heading cart-heading mb-4">
           <p className="section-kicker">Your bag</p>
           <h1 className="display-5 fw-light mb-0">Shopping cart</h1>
+          {cart.length > 0 && (
+            <p className="cart-item-count">
+              {itemCount} {itemCount === 1 ? "item" : "items"} in your cart
+            </p>
+          )}
         </div>
 
         {cart.length === 0 ? (
@@ -25,54 +31,73 @@ function Cart() {
             <div className="col-lg-8">
               <div className="cart-list">
                 {cart.map((item) => (
-                  <div key={item.id} className="cart-item d-flex gap-3 align-items-center">
+                  <article key={item.id} className="cart-item">
                     <img src={item.image} alt={item.name} className="cart-item-image" />
 
-                    <div className="flex-grow-1">
-                      <div className="d-flex justify-content-between align-items-start gap-3">
-                        <div>
-                          <h3>{item.name}</h3>
-                          <p className="text-secondary mb-2">{item.category} · {item.size}</p>
+                    <div className="cart-item-content">
+                      <div className="cart-item-heading">
+                        <div className="cart-item-description">
+                          <span className="cart-item-category">{item.category} · {item.size}</span>
+                          <h2>{item.name}</h2>
                         </div>
-                        <button type="button" className="btn btn-link text-dark p-0" onClick={() => removeFromCart(item.id)}>
+                        <button
+                          type="button"
+                          className="cart-remove-button"
+                          onClick={() => removeFromCart(item.id)}
+                          aria-label={`Remove ${item.name} from cart`}
+                        >
                           Remove
                         </button>
                       </div>
 
-                      <div className="d-flex align-items-center justify-content-between mt-3">
-                        <div className="quantity-box d-flex align-items-center">
-                          <button type="button" onClick={() => updateCartQuantity(item.id, item.quantity - 1)}>-</button>
+                      <div className="cart-item-footer">
+                        <div className="quantity-box">
+                          <button
+                            type="button"
+                            onClick={() => updateCartQuantity(item.id, item.quantity - 1)}
+                            aria-label={`Decrease ${item.name} quantity`}
+                          >
+                            −
+                          </button>
                           <span>{item.quantity}</span>
-                          <button type="button" onClick={() => updateCartQuantity(item.id, item.quantity + 1)}>+</button>
+                          <button
+                            type="button"
+                            onClick={() => updateCartQuantity(item.id, item.quantity + 1)}
+                            aria-label={`Increase ${item.name} quantity`}
+                          >
+                            +
+                          </button>
                         </div>
-
-                        <strong className="text-dark">₹{(item.price * item.quantity).toLocaleString("en-IN")}</strong>
+                        <strong className="cart-item-price">
+                          ₹{(item.price * item.quantity).toLocaleString("en-IN")}
+                        </strong>
                       </div>
                     </div>
-                  </div>
+                  </article>
                 ))}
               </div>
             </div>
 
             <div className="col-lg-4">
-              <aside className="summary-card">
-                <h3>Order summary</h3>
+              <aside className="summary-card cart-summary">
+                <h2>Order summary</h2>
                 <div className="summary-row">
-                  <span>Subtotal</span>
+                  <span>Items ({itemCount})</span>
                   <strong>₹{cartSubtotal.toLocaleString("en-IN")}</strong>
                 </div>
                 <div className="summary-row">
                   <span>Shipping</span>
-                  <strong>₹{shipping.toLocaleString("en-IN")}</strong>
+                  <strong>{shipping === 0 ? "Free" : `₹${shipping.toLocaleString("en-IN")}`}</strong>
                 </div>
-                <div className="summary-row total">
+                <div className="summary-row total cart-total">
                   <span>Total</span>
                   <strong>₹{total.toLocaleString("en-IN")}</strong>
                 </div>
 
-                <Link to="/checkout" className="btn premium-btn w-100 mt-3">
+                <Link to="/checkout" className="btn premium-btn cart-checkout-button">
                   Proceed to checkout
                 </Link>
+                <Link to="/shop" className="cart-continue-link">Continue shopping</Link>
               </aside>
             </div>
           </div>

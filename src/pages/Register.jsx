@@ -1,16 +1,31 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import bannerImage from "../assets/banner/attar_banner.png";
+import logoImage from "../assets/Al_Kausar_Logo.png";
 
+const fallbackCountries = [
+  "India",
+  "Saudi Arabia",
+  "United Arab Emirates",
+  "United Kingdom",
+  "United States",
+];
 
 function Register() {
   const [countries, setCountries] = useState(fallbackCountries);
   const [loadingCountries, setLoadingCountries] = useState(true);
+  const [countryLoadError, setCountryLoadError] = useState("");
 
   useEffect(() => {
     let isMounted = true;
 
     fetch("https://api.first.org/data/v1/countries")
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Country list request failed: ${response.status}`);
+        }
+        return response.json();
+      })
       .then((data) => {
         if (!isMounted) return;
 
@@ -20,11 +35,18 @@ function Register() {
           .filter(Boolean)
           .sort((a, b) => a.localeCompare(b));
 
-        setCountries(countryList.length ? countryList : fallbackCountries);
+        if (!countryList.length) {
+          throw new Error("Country list response was empty");
+        }
+
+        setCountries(countryList);
       })
       .catch(() => {
         if (isMounted) {
           setCountries(fallbackCountries);
+          setCountryLoadError(
+            "Couldn't load the full country list. Showing a short list instead.",
+          );
         }
       })
       .finally(() => {
@@ -39,30 +61,21 @@ function Register() {
   }, []);
 
   return (
-    <main className="premium-page auth-page">
-      <div className="auth-shell">
+    <main className="premium-page auth-page register-page">
+      <div className="auth-shell register-shell">
         <div
-          className="auth-panel auth-visual"
-          style={{
-            backgroundImage: "url('src/assets/banner/attar_banner.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "inherit",
-            margin: "5%",
-          }}
+          className="auth-panel auth-visual register-visual"
+          style={{ backgroundImage: `url(${bannerImage})` }}
         >
           {/* Intentionally left empty to keep the same visual treatment as the login page. */}
         </div>
 
-        <div className="auth-panel auth-form-panel">
-          <div
-            className="auth-brand-lockup"
-            style={{ textAlign: "center", marginBottom: "2rem" }}
-          >
+        <div className="auth-panel auth-form-panel register-form-panel">
+          <div className="auth-brand-lockup register-brand-lockup">
             <img
-              src="src/assets/Al_Kausar_Logo.png"
+              src={logoImage}
               alt="Al-Kausar Perfumes"
               className="img-fluid"
-              style={{ maxWidth: "30%", height: "auto" }}
             />
           </div>
 
@@ -114,6 +127,7 @@ function Register() {
                     </option>
                   ))}
                 </select>
+                {countryLoadError && <span role="status">{countryLoadError}</span>}
               </label>
               <label>
                 State

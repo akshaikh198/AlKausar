@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 const ShopContext = createContext();
 
@@ -15,6 +15,14 @@ export function ShopProvider({ children }) {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [toast, setToast] = useState(null);
+  const nextToastId = useRef(0);
+
+  const showToast = (message) => {
+    nextToastId.current += 1;
+    setToast({ id: nextToastId.current, message });
+  };
+  const dismissToast = useCallback(() => setToast(null), []);
 
   useEffect(() => {
     localStorage.setItem("almas-cart", JSON.stringify(cart));
@@ -36,9 +44,17 @@ export function ShopProvider({ children }) {
 
       return [...current, { ...product, quantity }];
     });
+    showToast(`${product.name} added to your cart`);
   };
 
   const updateCartQuantity = (id, quantity) => {
+    const item = cart.find((cartItem) => cartItem.id === id);
+    if (item && quantity > item.quantity) {
+      showToast(`${item.name} quantity increased`);
+    } else if (item && quantity <= 0) {
+      showToast(`${item.name} removed from your cart`);
+    }
+
     setCart((current) =>
       current
         .map((item) => (item.id === id ? { ...item, quantity: Math.max(0, quantity) } : item))
@@ -47,14 +63,18 @@ export function ShopProvider({ children }) {
   };
 
   const removeFromCart = (id) => {
+    const item = cart.find((cartItem) => cartItem.id === id);
     setCart((current) => current.filter((item) => item.id !== id));
+    if (item) showToast(`${item.name} removed from your cart`);
   };
 
   const toggleWishlist = (productId) => {
-    setWishlist((current) =>
-      current.includes(productId)
-        ? current.filter((id) => id !== productId)
-        : [...current, productId],
+    const isSaved = wishlist.includes(productId);
+    setWishlist((current) => current.includes(productId)
+      ? current.filter((id) => id !== productId)
+      : [...current, productId]);
+    showToast(
+      isSaved ? "Removed from your wishlist" : "Added to your wishlist",
     );
   };
 
@@ -67,6 +87,7 @@ export function ShopProvider({ children }) {
     () => cart.reduce((total, item) => total + item.price * item.quantity, 0),
     [cart],
   );
+  const wishlistCount = wishlist.length;
 
   const value = {
     cart,
@@ -80,7 +101,10 @@ export function ShopProvider({ children }) {
     removeFromCart,
     toggleWishlist,
     cartCount,
+    wishlistCount,
     cartSubtotal,
+    toast,
+    dismissToast,
   };
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;

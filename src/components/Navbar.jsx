@@ -8,7 +8,7 @@ import "./MyNavbar.css";
 
 function MyNavbar() {
   const navigate = useNavigate();
-  const { searchTerm, setSearchTerm } = useShop();
+  const { searchTerm, setSearchTerm, cartCount, wishlistCount } = useShop();
   const [searchOpen, setSearchOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
   const [collectionOpen, setCollectionOpen] = useState(false);
@@ -317,9 +317,14 @@ function MyNavbar() {
             <Nav.Link
               href="/cart"
               className="action-icon"
-              aria-label="Shopping cart"
+              aria-label={`Shopping cart, ${cartCount} ${cartCount === 1 ? "item" : "items"}`}
             >
               <i className="bi bi-bag-check"></i>
+              {cartCount > 0 && (
+                <span className="action-icon-count" aria-hidden="true">
+                  {cartCount}
+                </span>
+              )}
             </Nav.Link>
 
 
@@ -328,9 +333,14 @@ function MyNavbar() {
             <Nav.Link
               href="/wishlist"
               className="action-icon"
-              aria-label="Wishlist"
+              aria-label={`Wishlist, ${wishlistCount} ${wishlistCount === 1 ? "item" : "items"}`}
             >
               <i className="bi bi-heart"></i>
+              {wishlistCount > 0 && (
+                <span className="action-icon-count" aria-hidden="true">
+                  {wishlistCount}
+                </span>
+              )}
             </Nav.Link>
 
 

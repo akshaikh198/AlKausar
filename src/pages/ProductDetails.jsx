@@ -147,15 +147,20 @@ function ProductDetails() {
             <div className="royal-actions">
 
   <button
+    type="button"
     className="royal-icon-btn"
-    aria-label="Add to wishlist"
+    aria-label={wishlist.includes(product.id) ? "Remove from wishlist" : "Add to wishlist"}
+    aria-pressed={wishlist.includes(product.id)}
+    onClick={() => toggleWishlist(product.id)}
   >
-    <Heart size={18} strokeWidth={1.5} />
+    <Heart size={18} strokeWidth={1.5} fill={wishlist.includes(product.id) ? "currentColor" : "none"} />
   </button>
 
   <button
+    type="button"
     className="royal-icon-btn"
     aria-label="Add to cart"
+    onClick={() => addToCart(product)}
   >
     <ShoppingBag size={18} strokeWidth={1.5} />
   </button>

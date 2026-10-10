@@ -1,10 +1,11 @@
+import { useEffect } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import { ShopProvider } from "./context/ShopContext";
+import { ShopProvider, useShop } from "./context/ShopContext";
 
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
@@ -22,12 +23,30 @@ import Hero from "./components/Hero.jsx";
 
 function AppShell() {
   const location = useLocation();
+  const { toast, dismissToast } = useShop();
   const showHero = location.pathname === "/";
+
+  useEffect(() => {
+    if (!toast) return undefined;
+
+    const timeout = window.setTimeout(dismissToast, 3000);
+    return () => window.clearTimeout(timeout);
+  }, [toast, dismissToast]);
 
   return (
     <>
       <Navbar />
       <Hero show={showHero} />
+      <div className="shop-toast-region" aria-live="polite" aria-atomic="true">
+        {toast && (
+          <div className="shop-toast" role="status" key={toast.id}>
+            <span>{toast.message}</span>
+            <button type="button" onClick={dismissToast} aria-label="Dismiss notification">
+              <i className="bi bi-x-lg" aria-hidden="true" />
+            </button>
+          </div>
+        )}
+      </div>
 
       <Routes>
         <Route path="/" element={<Home />} />

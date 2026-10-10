@@ -152,6 +152,10 @@
     padding-top: 3rem;
   }
 
+  .footer-title {
+    font-size: 1rem;
+  }
+
   .contact-column {
     margin-left: 0;
   }

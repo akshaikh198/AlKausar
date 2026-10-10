@@ -12,12 +12,11 @@ import navData from "./navData";
 import SearchBox from "./SearchBox";
 
 import logo from "../../assets/logo.png";
+import { useShop } from "../../context/ShopContext";
 
 function MyNavbar() {
   const [searchOpen, setSearchOpen] = useState(false);
-
-  const cartCount = 2;
-  const wishlistCount = 4;
+  const { cartCount, wishlistCount } = useShop();
 
   return (
     <Navbar

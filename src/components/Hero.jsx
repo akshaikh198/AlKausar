@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import products from "../data/products";
-import { ShoppingBag, Heart } from "lucide-react";
-import Testimonial from "../components/Testimonial";
-import ProductDetailGallery from "../components/productdetailsgallary";
 
 const heroSlides = [
     {
@@ -30,7 +26,7 @@ const heroSlides = [
 ];
 
 
-function Hero(){
+function Hero({ show = true }) {
     const [activeSlide, setActiveSlide] = useState(0);
       const [isPaused, setIsPaused] = useState(false);
     
@@ -49,6 +45,9 @@ function Hero(){
       const showSlide = (slideIndex) => {
         setActiveSlide((slideIndex + heroSlides.length) % heroSlides.length);
       };
+
+    if (!show) return null;
+
     return (
         <>
   {/* hero slider section */}

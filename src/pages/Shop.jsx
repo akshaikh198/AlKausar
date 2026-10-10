@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { Offcanvas } from "react-bootstrap";
 import products from "../data/products";
 import { useShop } from "../context/ShopContext";
-import { ShoppingBag, Heart, RotateCcw } from "lucide-react";
+import { ShoppingBag, Heart, RotateCcw, SlidersHorizontal } from "lucide-react";
 
 const categories = ["All", "Perfume", "Attar", "Deo", "Gift Sets"];
 
@@ -24,12 +25,139 @@ const sortOptions = [
   { label: "Size: Large to Small", value: "size-desc" },
 ];
 
+function FilterPanel({
+  idPrefix,
+  selectedCategory,
+  setSelectedCategory,
+  priceFilter,
+  setPriceFilter,
+  sizeFilter,
+  setSizeFilter,
+  notesSearch,
+  setNotesSearch,
+  sortBy,
+  setSortBy,
+  resetFilters,
+}) {
+  return (
+    <div className="shop-sidebar">
+      <button
+        type="button"
+        className="shop-reset-button"
+        onClick={resetFilters}
+        aria-label="Reset all filters and sorting"
+        title="Reset all filters and sorting"
+      >
+        <RotateCcw size={16} aria-hidden="true" />
+        <span>Reset</span>
+      </button>
+
+      <div className="sidebar-block">
+        <h3>Categories</h3>
+        <div className="sidebar-list">
+          {categories.map((category) => (
+            <button
+              type="button"
+              key={category}
+              className={`sidebar-link ${selectedCategory === category ? "active" : ""}`}
+              onClick={() => setSelectedCategory(category)}
+              aria-pressed={selectedCategory === category}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="sidebar-block">
+        <h3>Price</h3>
+        <div className="sidebar-list">
+          {priceFilters.map((option) => (
+            <button
+              type="button"
+              key={option.value}
+              className={`sidebar-link ${priceFilter === option.value ? "active" : ""}`}
+              onClick={() => setPriceFilter(option.value)}
+              aria-pressed={priceFilter === option.value}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="sidebar-block">
+        <h3>Size</h3>
+        <label className="visually-hidden" htmlFor={`${idPrefix}-size-filter`}>Filter by size</label>
+        <select
+          id={`${idPrefix}-size-filter`}
+          className="shop-filter-input"
+          value={sizeFilter}
+          onChange={(event) => setSizeFilter(event.target.value)}
+        >
+          <option value="all">All sizes</option>
+          {sizes.map((size) => (
+            <option key={size} value={size}>{size}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="sidebar-block">
+        <h3>Fragrance notes</h3>
+        <label className="visually-hidden" htmlFor={`${idPrefix}-notes-search`}>Search fragrance notes</label>
+        <input
+          id={`${idPrefix}-notes-search`}
+          className="shop-filter-input"
+          type="search"
+          placeholder="Search notes..."
+          value={notesSearch}
+          onChange={(event) => setNotesSearch(event.target.value)}
+        />
+      </div>
+
+      <div className="sidebar-block">
+        <h3>Sort by</h3>
+        <div className="sidebar-list">
+          {sortOptions.map((option) => (
+            <button
+              type="button"
+              key={option.value}
+              className={`sidebar-link ${sortBy === option.value ? "active" : ""}`}
+              onClick={() => setSortBy(option.value)}
+              aria-pressed={sortBy === option.value}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Shop() {
-  const { searchTerm, setSearchTerm, selectedCategory, setSelectedCategory } = useShop();
+  const {
+    searchTerm,
+    setSearchTerm,
+    selectedCategory,
+    setSelectedCategory,
+    addToCart,
+    toggleWishlist,
+    wishlist,
+  } = useShop();
   const [sortBy, setSortBy] = useState("featured");
   const [priceFilter, setPriceFilter] = useState("all");
   const [sizeFilter, setSizeFilter] = useState("all");
   const [notesSearch, setNotesSearch] = useState("");
+  const [filtersOpen, setFiltersOpen] = useState(false);
+
+  const activeFilterCount = [
+    selectedCategory !== "All",
+    priceFilter !== "all",
+    sizeFilter !== "all",
+    notesSearch.trim() !== "",
+    sortBy !== "featured",
+  ].filter(Boolean).length;
 
   const resetFilters = () => {
     setSearchTerm("");
@@ -92,7 +220,7 @@ function Shop() {
   }, [notesSearch, priceFilter, searchTerm, selectedCategory, sizeFilter, sortBy]);
 
   return (
-    <main className="page-shell">
+    <main className="page-shell shop-page">
       <section className="collection-hero">
         <div className="container py-5 text-center text-dark">
           <p className="section-kicker">Curated collection</p>
@@ -105,103 +233,77 @@ function Shop() {
 
       <div className="container py-5">
         <div className="row g-4 align-items-start">
-          <aside className="col-12 col-lg-3">
-            <div className="shop-sidebar">
-              <button
-                type="button"
-                className="shop-reset-button"
-                onClick={resetFilters}
-                aria-label="Reset all filters and sorting"
-                title="Reset all filters and sorting"
-              >
-                <RotateCcw size={16} aria-hidden="true" />
-                <span>Reset</span>
-              </button>
-
-              <div className="sidebar-block">
-                <h3>Categories</h3>
-                <div className="sidebar-list">
-                  {categories.map((category) => (
-                    <button
-                      type="button"
-                      key={category}
-                      className={`sidebar-link ${selectedCategory === category ? "active" : ""}`}
-                      onClick={() => setSelectedCategory(category)}
-                    >
-                      {category}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="sidebar-block">
-                <h3>Price</h3>
-                <div className="sidebar-list">
-                  {priceFilters.map((option) => (
-                    <button
-                      type="button"
-                      key={option.value}
-                      className={`sidebar-link ${priceFilter === option.value ? "active" : ""}`}
-                      onClick={() => setPriceFilter(option.value)}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="sidebar-block">
-                <h3>Size</h3>
-                <label className="visually-hidden" htmlFor="shop-size-filter">Filter by size</label>
-                <select
-                  id="shop-size-filter"
-                  className="shop-filter-input"
-                  value={sizeFilter}
-                  onChange={(event) => setSizeFilter(event.target.value)}
-                >
-                  <option value="all">All sizes</option>
-                  {sizes.map((size) => (
-                    <option key={size} value={size}>{size}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="sidebar-block">
-                <h3>Fragrance notes</h3>
-                <label className="visually-hidden" htmlFor="shop-notes-search">Search fragrance notes</label>
-                <input
-                  id="shop-notes-search"
-                  className="shop-filter-input"
-                  type="text"
-                  placeholder="Search notes..."
-                  value={notesSearch}
-                  onChange={(event) => setNotesSearch(event.target.value)}
-                />
-              </div>
-
-              <div className="sidebar-block">
-                <h3>Sort by</h3>
-                <div className="sidebar-list">
-                  {sortOptions.map((option) => (
-                    <button
-                      type="button"
-                      key={option.value}
-                      className={`sidebar-link ${sortBy === option.value ? "active" : ""}`}
-                      onClick={() => setSortBy(option.value)}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
+          <aside className="col-12 col-lg-3 shop-desktop-filters">
+            <FilterPanel
+              idPrefix="desktop"
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              priceFilter={priceFilter}
+              setPriceFilter={setPriceFilter}
+              sizeFilter={sizeFilter}
+              setSizeFilter={setSizeFilter}
+              notesSearch={notesSearch}
+              setNotesSearch={setNotesSearch}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              resetFilters={resetFilters}
+            />
           </aside>
 
           <div className="col-12 col-lg-9">
             <div className="shop-toolbar mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
               <p className="mb-0 text-secondary">Showing {filteredProducts.length} products</p>
-              <div className="text-secondary small text-uppercase">{selectedCategory}</div>
+              <div className="shop-toolbar-actions">
+                <div className="text-secondary small text-uppercase">{selectedCategory}</div>
+                <button
+                  type="button"
+                  className="shop-mobile-filter-button"
+                  onClick={() => setFiltersOpen(true)}
+                  aria-label={activeFilterCount ? `Open filters and sorting, ${activeFilterCount} active` : "Open filters and sorting"}
+                  aria-haspopup="dialog"
+                  aria-expanded={filtersOpen}
+                >
+                  <SlidersHorizontal size={17} aria-hidden="true" />
+                  <span>Filter & sort</span>
+                  {activeFilterCount > 0 && <span className="shop-filter-count">{activeFilterCount}</span>}
+                </button>
+              </div>
             </div>
+
+            <Offcanvas
+              show={filtersOpen}
+              onHide={() => setFiltersOpen(false)}
+              placement="start"
+              className="shop-filter-drawer"
+              aria-labelledby="shop-filter-drawer-title"
+            >
+              <Offcanvas.Header closeButton>
+                <Offcanvas.Title id="shop-filter-drawer-title">Filter & sort</Offcanvas.Title>
+              </Offcanvas.Header>
+              <Offcanvas.Body>
+                <FilterPanel
+                  idPrefix="mobile"
+                  selectedCategory={selectedCategory}
+                  setSelectedCategory={setSelectedCategory}
+                  priceFilter={priceFilter}
+                  setPriceFilter={setPriceFilter}
+                  sizeFilter={sizeFilter}
+                  setSizeFilter={setSizeFilter}
+                  notesSearch={notesSearch}
+                  setNotesSearch={setNotesSearch}
+                  sortBy={sortBy}
+                  setSortBy={setSortBy}
+                  resetFilters={resetFilters}
+                />
+                <button
+                  type="button"
+                  className="shop-filter-apply"
+                  onClick={() => setFiltersOpen(false)}
+                >
+                  Show {filteredProducts.length} products
+                </button>
+              </Offcanvas.Body>
+            </Offcanvas>
 
             {filteredProducts.length === 0 ? (
               <div className="empty-state text-center py-5">
@@ -211,64 +313,55 @@ function Shop() {
             ) : (
               <div className="row g-4">
                 {filteredProducts.map((product) => (
-                  <div key={product.id} className="col-12 col-md-6 col-xl-4">
-                    <div className="royal-product-card" style={{ height: "250px" }}>
-
-                      {/* IMAGE AREA */}
-                      <div className="royal-product-image" style={{ height: "200px" }}>
-
+                  <div key={product.id} className="col-6 col-xl-4">
+                    <article className="shop-product-card">
+                      <div className="shop-product-image">
                         <Link to={`/product/${product.id}`}>
                           <img src={product.image} alt={product.name} />
                         </Link>
-
                         <img
                           src={product.hoverImage || product.image}
                           alt={`${product.name} alternate view`}
-                          className="product-hover-image"
+                          className="shop-product-hover-image"
                         />
-
-                        <div className="royal-product-overlay">
-                          <div className="royal-actions">
-                            <button className="royal-icon-btn" aria-label="Add to wishlist">
-                              <Heart size={18} strokeWidth={1.5} />
-                            </button>
-
-                            <button className="royal-icon-btn" aria-label="Add to cart">
-                              <ShoppingBag size={18} strokeWidth={1.5} />
-                            </button>
-                          </div>
-
-                          <div className="royal-price">
-                            ₹{product.price.toLocaleString("en-IN")}
-                          </div>
+                        <div className="shop-product-actions">
+                          <button
+                            type="button"
+                            className="shop-product-action"
+                            aria-label={wishlist.includes(product.id) ? "Remove from wishlist" : "Add to wishlist"}
+                            aria-pressed={wishlist.includes(product.id)}
+                            onClick={() => toggleWishlist(product.id)}
+                          >
+                            <Heart
+                              size={17}
+                              strokeWidth={1.7}
+                              fill={wishlist.includes(product.id) ? "currentColor" : "none"}
+                            />
+                          </button>
+                          <button
+                            type="button"
+                            className="shop-product-action"
+                            aria-label={`Add ${product.name} to cart`}
+                            onClick={() => addToCart(product)}
+                          >
+                            <ShoppingBag size={17} strokeWidth={1.7} />
+                          </button>
                         </div>
                       </div>
 
-                      <div className="royal-product-info" style={{ height: "50px" }}>
-                        <span
-                          className="royal-product-category"
-                          style={{
-                            fontSize: "0.8rem",
-                            color: "#888",
-                            textTransform: "uppercase",
-                            letterSpacing: "0.05em",
-                            textAlign: "start",
-                            display: "block",
-                            marginBottom: "0.25rem",
-                          }}
-                        >
-                          {product.category}
-                        </span>
-
+                      <div className="shop-product-info">
+                        <span className="shop-product-category">{product.category} · {product.size}</span>
                         <Link
                           to={`/product/${product.id}`}
-                          className="royal-product-name"
-                          style={{ fontSize: "1rem", fontWeight: "500", color: "#333" }}
+                          className="shop-product-name"
                         >
                           {product.name}
                         </Link>
+                        <strong className="shop-product-price">
+                          ₹{product.price.toLocaleString("en-IN")}
+                        </strong>
                       </div>
-                    </div>
+                    </article>
                   </div>
                 ))}
               </div>
