@@ -745,12 +745,12 @@ background:  #ffb849;
 
 @media (hover: none) and (pointer: coarse) {
 
-  .custom-dropdown:hover > .custom-dropdown-menu {
+  .custom-dropdown:hover:not(.dropdown-open) > .custom-dropdown-menu {
     opacity: 0;
     visibility: hidden;
   }
 
-  .nested-dropdown:hover > .nested-dropdown-menu {
+  .nested-dropdown:hover:not(.nested-open) > .nested-dropdown-menu {
     opacity: 0;
     visibility: hidden;
   }
