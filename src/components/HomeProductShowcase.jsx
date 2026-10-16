@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Heart, ShoppingBag } from "lucide-react";
-import { useShop } from "../context/ShopContext";
+import { useShop } from "../context/useShop";
 
 function HomeProductShowcase({ kicker, title, products }) {
   const { addToCart, toggleWishlist, wishlist } = useShop();

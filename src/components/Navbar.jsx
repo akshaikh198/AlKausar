@@ -3,12 +3,12 @@ import { Container, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 import logo from "../assets/Al_Kausar_Logo.png";
-import { useShop } from "../context/ShopContext";
+import { useShop } from "../context/useShop";
 import "./MyNavbar.css";
 
 function MyNavbar() {
   const navigate = useNavigate();
-  const { searchTerm, setSearchTerm, cartCount, wishlistCount } = useShop();
+  const { searchTerm, setSearchTerm, cartCount, wishlistCount, session } = useShop();
   const [searchOpen, setSearchOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
   const [collectionOpen, setCollectionOpen] = useState(false);
@@ -347,11 +347,11 @@ function MyNavbar() {
             {/* ACCOUNT */}
 
             <Nav.Link
-              href="/login"
+              href={session?.role === "Admin" ? "/admin" : session ? "/account" : "/login"}
               className="action-icon"
-              aria-label="Account"
+              aria-label={session ? "Dashboard" : "Sign in"}
             >
-              <i className="bi bi-person"></i>
+              <i className={session ? "bi bi-person-check" : "bi bi-person"}></i>
             </Nav.Link>
 
           </Nav>

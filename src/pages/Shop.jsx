@@ -1,11 +1,8 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Offcanvas } from "react-bootstrap";
-import products from "../data/products";
-import { useShop } from "../context/ShopContext";
+import { useShop } from "../context/useShop";
 import { ShoppingBag, Heart, RotateCcw, SlidersHorizontal } from "lucide-react";
-
-const categories = ["All", "Perfume", "Attar", "Deo", "Gift Sets"];
 
 const priceFilters = [
   { label: "All prices", value: "all" },
@@ -27,6 +24,7 @@ const sortOptions = [
 
 function FilterPanel({
   idPrefix,
+  categories,
   selectedCategory,
   setSelectedCategory,
   priceFilter,
@@ -144,12 +142,14 @@ function Shop() {
     addToCart,
     toggleWishlist,
     wishlist,
+    products,
   } = useShop();
   const [sortBy, setSortBy] = useState("featured");
   const [priceFilter, setPriceFilter] = useState("all");
   const [sizeFilter, setSizeFilter] = useState("all");
   const [notesSearch, setNotesSearch] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const categories = ["All", ...new Set(products.map((product) => product.category))];
 
   const activeFilterCount = [
     selectedCategory !== "All",
@@ -217,7 +217,7 @@ function Shop() {
     }
 
     return sorted;
-  }, [notesSearch, priceFilter, searchTerm, selectedCategory, sizeFilter, sortBy]);
+  }, [notesSearch, priceFilter, products, searchTerm, selectedCategory, sizeFilter, sortBy]);
 
   return (
     <main className="page-shell shop-page">
@@ -236,6 +236,7 @@ function Shop() {
           <aside className="col-12 col-lg-3 shop-desktop-filters">
             <FilterPanel
               idPrefix="desktop"
+              categories={categories}
               selectedCategory={selectedCategory}
               setSelectedCategory={setSelectedCategory}
               priceFilter={priceFilter}
@@ -283,6 +284,7 @@ function Shop() {
               <Offcanvas.Body>
                 <FilterPanel
                   idPrefix="mobile"
+                  categories={categories}
                   selectedCategory={selectedCategory}
                   setSelectedCategory={setSelectedCategory}
                   priceFilter={priceFilter}

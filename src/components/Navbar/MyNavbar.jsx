@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Container,
   Navbar,
@@ -12,11 +13,11 @@ import navData from "./navData";
 import SearchBox from "./SearchBox";
 
 import logo from "../../assets/logo.png";
-import { useShop } from "../../context/ShopContext";
+import { useShop } from "../../context/useShop";
 
 function MyNavbar() {
   const [searchOpen, setSearchOpen] = useState(false);
-  const { cartCount, wishlistCount } = useShop();
+  const { cartCount, wishlistCount, session } = useShop();
 
   return (
     <Navbar
@@ -86,7 +87,8 @@ function MyNavbar() {
 
           {/* WISHLIST */}
           <Nav.Link
-            href="/wishlist"
+            as={Link}
+            to="/wishlist"
             className="navbar-icon-link"
             aria-label="Wishlist"
           >
@@ -101,7 +103,8 @@ function MyNavbar() {
 
           {/* CART */}
           <Nav.Link
-            href="/cart"
+            as={Link}
+            to="/cart"
             className="navbar-icon-link"
             aria-label="Shopping cart"
           >
@@ -116,11 +119,12 @@ function MyNavbar() {
 
           {/* ACCOUNT */}
           <Nav.Link
-            href="/account"
+            as={Link}
+            to={session?.role === "Admin" ? "/admin" : session ? "/account" : "/login"}
             className="navbar-icon-link account-link"
-            aria-label="Account"
+            aria-label={session ? "Dashboard" : "Sign in"}
           >
-            <i className="bi bi-person"></i>
+            <i className={session ? "bi bi-person-check" : "bi bi-person"}></i>
           </Nav.Link>
 
         </div>

@@ -5,7 +5,8 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import { ShopProvider, useShop } from "./context/ShopContext";
+import { ShopProvider } from "./context/ShopContext";
+import { useShop } from "./context/useShop";
 
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
@@ -20,10 +21,12 @@ import Journal from "./pages/Journal";
 import Contact from "./pages/Contact";
 import JournalList from "./pages/JournalList";
 import Hero from "./components/Hero.jsx";
+import AccountDashboard from "./pages/AccountDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function AppShell() {
   const location = useLocation();
-  const { toast, dismissToast } = useShop();
+  const { toast, dismissToast, catalogError, refreshProducts } = useShop();
   const showHero = location.pathname === "/";
 
   useEffect(() => {
@@ -37,6 +40,12 @@ function AppShell() {
     <>
       <Navbar />
       <Hero show={showHero} />
+      {catalogError && (
+        <div className="backend-status-banner" role="alert">
+          <span>Store connection issue: {catalogError}</span>
+          <button type="button" onClick={refreshProducts}>Retry</button>
+        </div>
+      )}
       <div className="shop-toast-region" aria-live="polite" aria-atomic="true">
         {toast && (
           <div className="shop-toast" role="status" key={toast.id}>
@@ -57,6 +66,8 @@ function AppShell() {
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/account" element={<AccountDashboard />} />
+        <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/about" element={<About />} />
         <Route path="/pages/about" element={<Navigate to="/about" replace />} />

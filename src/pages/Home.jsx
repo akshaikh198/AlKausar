@@ -1,20 +1,25 @@
 
 import { Link } from "react-router-dom";
-import products from "../data/products";
 import Testimonial from "../components/Testimonial";
 import BestSellers from "../components/BestSellers";
 import NewArrivals from "../components/NewArrivals";
 import Sales from "../components/Sales";
-
-const categories = [
-  { name: "Perfume", image: products[0].image, hoverImage: products[0].hoverImage, text: "Signature scent stories" },
-  { name: "Attar", image: products[1].image, hoverImage: products[1].hoverImage, text: "Concentrated luxury" },
-  { name: "Deo", image: products[5].image, hoverImage: products[5].hoverImage, text: "Daily freshness" },
-  { name: "Gift Sets", image: products[4].image, hoverImage: products[4].hoverImage, text: "Elegant gifting" },
-];
+import { useShop } from "../context/useShop";
 
 
 function Home() {
+  const { products } = useShop();
+  const categoryCopy = {
+    Perfume: "Signature scent stories",
+    Attar: "Concentrated luxury",
+    "Gift Sets": "Elegant gifting",
+  };
+  const categories = [...new Set(products.map((product) => product.category))]
+    .map((name) => ({
+      name,
+      ...(products.find((product) => product.category === name) || {}),
+      text: categoryCopy[name] || "Discover the collection",
+    }));
   return (
     <main className="home-page">
 
@@ -75,7 +80,7 @@ function Home() {
         <div className="row g-4 align-items-center">
           <div className="col-lg-6">
             <div className="story-card position-relative overflow-hidden h-100">
-              <img src={products[3].image} alt="Luxury fragrance ritual" className="img-fluid h-100 w-100" />
+              {products[3] && <img src={products[3].image} alt="Luxury fragrance ritual" className="img-fluid h-100 w-100" />}
             </div>
           </div>
           <div className="col-lg-6">

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import bannerImage from "../assets/banner/attar_banner.png";
 import logoImage from "../assets/Al_Kausar_Logo.png";
+import { useShop } from "../context/useShop";
 
 const fallbackCountries = [
   "India",
@@ -12,9 +13,13 @@ const fallbackCountries = [
 ];
 
 function Register() {
+  const { register, session } = useShop();
+  const navigate = useNavigate();
   const [countries, setCountries] = useState(fallbackCountries);
   const [loadingCountries, setLoadingCountries] = useState(true);
   const [countryLoadError, setCountryLoadError] = useState("");
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -60,6 +65,33 @@ function Register() {
     };
   }, []);
 
+  if (session) return <Navigate to={session.role === "Admin" ? "/admin" : "/account"} replace />;
+
+  const submit = async (event) => {
+    event.preventDefault();
+    setError("");
+    const values = new FormData(event.currentTarget);
+    const password = values.get("password");
+    if (password !== values.get("confirmPassword")) {
+      setError("The passwords do not match.");
+      return;
+    }
+    setBusy(true);
+    try {
+      await register({
+        fullName: `${values.get("firstName")} ${values.get("lastName")}`.trim(),
+        email: values.get("email"),
+        phone: values.get("phone"),
+        password,
+      });
+      navigate("/account", { replace: true });
+    } catch (requestError) {
+      setError(requestError.message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
     <main className="premium-page auth-page register-page">
       <div className="auth-shell register-shell">
@@ -80,38 +112,39 @@ function Register() {
           </div>
 
           <h2>Create account</h2>
-          <form className="auth-form">
+          {error && <p className="dashboard-alert error" role="alert">{error}</p>}
+          <form className="auth-form" onSubmit={submit}>
             <div className="two-column-fields">
               <label>
                 First name
-                <input type="text" placeholder="Ayesha" />
+                <input name="firstName" type="text" maxLength="60" autoComplete="given-name" placeholder="Ayesha" required />
               </label>
               <label>
                 Last name
-                <input type="text" placeholder="Khan" />
+                <input name="lastName" type="text" maxLength="60" autoComplete="family-name" placeholder="Khan" required />
               </label>
             </div>
 
             <div className="two-column-fields">
               <label>
                 Mobile Number
-                <input type="tel" placeholder="+971 50 123 4567" />
+                <input name="phone" type="tel" maxLength="32" autoComplete="tel" placeholder="+971 50 123 4567" />
                 <span style={{fontSize:'8px', paddingLeft:'6%'}}> Enter Mobile Number With Country Code</span>
               </label>
               <label>
                 Email address
-                <input type="email" placeholder="hello@almas.com" />
+                <input name="email" type="email" maxLength="254" autoComplete="email" placeholder="hello@almas.com" required />
               </label>
             </div>
 
             <div className="two-column-fields">
               <label>
                 Password
-                <input type="password" placeholder="Create a password" />
+                <input name="password" type="password" minLength="10" maxLength="72" autoComplete="new-password" placeholder="Create a password (10+ characters)" required />
               </label>
               <label>
                 Confirm password
-                <input type="password" placeholder="Re-enter your password" />
+                <input name="confirmPassword" type="password" minLength="10" maxLength="72" autoComplete="new-password" placeholder="Re-enter your password" required />
               </label>
             </div>
 
@@ -163,8 +196,8 @@ function Register() {
               <textarea rows="3" placeholder="House no., street, landmark, etc." />
             </label>
 
-            <button type="submit" className="primary-button premium full-width">
-              Register now
+            <button type="submit" className="primary-button premium full-width" disabled={busy}>
+            {busy ? "Creating account..." : "Register now"}
             </button>
           </form>
 

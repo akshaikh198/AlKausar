@@ -1,7 +1,8 @@
-import products from "../data/products";
 import HomeProductShowcase from "./HomeProductShowcase";
+import { useShop } from "../context/useShop";
 
 function BestSellers() {
+  const { products } = useShop();
   return (
     <HomeProductShowcase
       kicker="Customer favourites"

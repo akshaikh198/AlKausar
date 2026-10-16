@@ -1,4 +1,4 @@
-import products from "../data/products";
+import { useShop } from "../context/useShop";
 import SliderModule from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -8,6 +8,7 @@ const Slider =
 
 
 function Featured() {
+    const { products } = useShop();
 
     const settings = {
     infinite: true,

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useShop } from "../../context/ShopContext";
+import { useShop } from "../../context/useShop";
 
 function SearchBox({ isOpen, setIsOpen }) {
   const navigate = useNavigate();

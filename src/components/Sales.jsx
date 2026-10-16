@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import products from "../data/products";
+import { useShop } from "../context/useShop";
 
 function Sales() {
+  const { products } = useShop();
   const featuredProduct = products[4];
 
   return (
@@ -20,9 +21,9 @@ function Sales() {
             Explore the collection
           </Link>
         </div>
-        <div className="sales-promo-image">
+        {featuredProduct && <div className="sales-promo-image">
           <img src={featuredProduct.image} alt={featuredProduct.name} />
-        </div>
+        </div>}
       </div>
     </section>
   );

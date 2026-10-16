@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
-import products from "../data/products";
-import { useShop } from "../context/ShopContext";
+import { useShop } from "../context/useShop";
 
 function Wishlist() {
-  const { wishlist, toggleWishlist, addToCart } = useShop();
+  const { wishlist, toggleWishlist, addToCart, products } = useShop();
   const savedItems = products.filter((product) => wishlist.includes(product.id));
 
   return (

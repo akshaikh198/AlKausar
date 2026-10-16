@@ -32,6 +32,10 @@ node_modules/
 # Vite build output
 dist/
 
+# .NET build output
+**/bin/
+**/obj/
+
 # Environment variables and secrets
 .env
 .env.*

@@ -1,23 +1,24 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import products from "../data/products";
-import { useShop } from "../context/ShopContext";
+import { useShop } from "../context/useShop";
 import { ShoppingBag, Heart } from "lucide-react";
 
 function ProductDetails() {
   const { id } = useParams();
-  const { addToCart, toggleWishlist, wishlist } = useShop();
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const { addToCart, toggleWishlist, wishlist, products } = useShop();
+  const [activeImage, setActiveImage] = useState({ id, index: 0 });
 
-  const product = products.find((item) => String(item.id) === id) || products[0];
-  const productImages = [...new Set([product.image, product.hoverImage].filter(Boolean))];
-  const related = products.filter((item) => item.id !== product.id).slice(0, 3);
-  const isSaved = wishlist.includes(product.id);
-  const featured = products.slice(0, 8);
+  const product = products.find((item) => String(item.id) === id);
+  const related = products.filter((item) => item.id !== product?.id).slice(0, 3);
+  const featured = related.length ? related : products.slice(0, 4);
+  const productImages = product ? [...new Set([product.image, product.hoverImage].filter(Boolean))] : [];
+  const isSaved = product ? wishlist.includes(product.id) : false;
 
-  useEffect(() => {
-    setActiveImageIndex(0);
-  }, [product.id]);
+  const activeImageIndex = activeImage.id === id ? activeImage.index : 0;
+
+  if (!product) {
+    return <main className="page-shell"><div className="container py-5"><h1>Product not found</h1><Link to="/shop">Back to collection</Link></div></main>;
+  }
 
   return (
     <main className="page-shell">
@@ -43,7 +44,7 @@ function ProductDetails() {
                       type="button"
                       key={image}
                       className={`detail-gallery-thumbnail ${activeImageIndex === imageIndex ? "active" : ""}`}
-                      onClick={() => setActiveImageIndex(imageIndex)}
+                      onClick={() => setActiveImage({ id, index: imageIndex })}
                       aria-label={`View ${product.name} image ${imageIndex + 1}`}
                       aria-pressed={activeImageIndex === imageIndex}
                     >

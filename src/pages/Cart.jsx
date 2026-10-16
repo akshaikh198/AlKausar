@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useShop } from "../context/ShopContext";
+import { useShop } from "../context/useShop";
 
 function Cart() {
   const { cart, updateCartQuantity, removeFromCart, cartSubtotal } = useShop();
